@@ -2,6 +2,10 @@ name: Release
 
 on:
   workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing release tag to (re)build the APK for, e.g. v0.2.0'
+        required: true
   push:
     branches:
       - main
@@ -28,12 +32,16 @@ jobs:
   build-apk:
     needs: release-please
     runs-on: ubuntu-latest
-    if: needs.release-please.outputs.release_created == 'true'
+    if: needs.release-please.outputs.release_created == 'true' || inputs.tag != ''
     steps:
+      - name: Resolve tag
+        id: tag
+        run: echo "tag=${{ inputs.tag || needs.release-please.outputs.tag_name }}" >> "$GITHUB_OUTPUT"
+
       - name: Checkout release tag
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: ${{ needs.release-please.outputs.tag_name }}
+          ref: ${{ steps.tag.outputs.tag }}
 
       - name: Set up JDK 21
         uses: actions/setup-java@v5
@@ -60,5 +68,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           APK=$(ls app/build/outputs/apk/release/*.apk | head -1)
-          echo "Attaching $APK to ${{ needs.release-please.outputs.tag_name }}"
-          gh release upload "${{ needs.release-please.outputs.tag_name }}" "$APK" --clobber --repo "$GITHUB_REPOSITORY"
+          echo "Attaching $APK to ${{ steps.tag.outputs.tag }}"
+          gh release upload "${{ steps.tag.outputs.tag }}" "$APK" --clobber --repo "$GITHUB_REPOSITORY"
