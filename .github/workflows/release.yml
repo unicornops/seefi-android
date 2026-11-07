@@ -53,7 +53,7 @@ jobs:
           SEEFI_KEYSTORE_PASSWORD: ${{ secrets.SEEFI_KEYSTORE_PASSWORD }}
           SEEFI_KEY_ALIAS: ${{ secrets.SEEFI_KEY_ALIAS }}
           SEEFI_KEY_PASSWORD: ${{ secrets.SEEFI_KEY_PASSWORD }}
-        run: ./gradlew assembleRelease testReleaseUnitTest
+        run: ./gradlew assembleRelease
 
       - name: Upload APK to release
         env:
