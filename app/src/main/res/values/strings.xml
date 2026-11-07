@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Seefi</string>
+    <string name="notification_channel_name">Receiving photos</string>
+    <string name="notification_channel_description">Shows while the Wi-Fi SD card server is running.</string>
+    <string name="notification_title">Seefi is receiving</string>
+    <plurals name="notification_text">
+        <item quantity="one">%1$d photo received - listening for cards on port %2$d</item>
+        <item quantity="other">%1$d photos received - listening for cards on port %2$d</item>
+    </plurals>
+    <string name="notification_stop">Stop</string>
+</resources>
