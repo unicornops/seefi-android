@@ -44,11 +44,8 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v5
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-
       - name: Accept Android SDK licenses
-        run: yes | sdkmanager --licenses > /dev/null || true
+        run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
 
       - name: Build release APK
         env:
