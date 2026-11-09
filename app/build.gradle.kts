@@ -32,7 +32,8 @@ android {
     signingConfigs {
         if (keystoreBase64.isPresent && keystoreBase64.get().isNotEmpty()) {
             create("release") {
-                val decoded = File(layout.buildDirectory.get().asFile, "release.keystore").apply {
+                val decoded = File(layout.buildDirectory.get().asFile, "signing/release.keystore").apply {
+                    parentFile.mkdirs()
                     writeBytes(Base64.getDecoder().decode(keystoreBase64.get()))
                 }
                 storeFile = decoded
