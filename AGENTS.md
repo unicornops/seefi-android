@@ -53,5 +53,11 @@ Do not edit the version by hand - release-please manages it via release PRs.
 - `protocol/` has exhaustive JVM unit tests including a socket-level
   integration test (`EyeFiServerIntegrationTest`) that runs the real server
   on an ephemeral port
-- Device/emulator behaviour (Wi-Fi, MediaStore, foreground service) needs a
-  physical device; the card protocol itself never does
+- `data/` and `service/` are covered by Robolectric tests
+  (`testDebugUnitTest`); `ReceiveServerServiceTest` drives the real
+  foreground service through its lifecycle and runs a mock EyeFi card
+  against the bound server socket, and PhotoStore's MediaStore contract
+  is verified through ShadowContentResolver's recorded statements
+  (Robolectric's media shadow does not serve query results)
+- Real device behaviour (Wi-Fi join, system gallery, notifications)
+  still needs a physical device; the card protocol and media writes never do
